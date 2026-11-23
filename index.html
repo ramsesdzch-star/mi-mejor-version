@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090b0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mi mejor versión">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Mi mejor versión</title>
+<style>
+:root{color-scheme:dark;--bg:#090b0a;--panel:#121614;--panel2:#191f1b;--line:#27312a;--muted:#89958c;--text:#f2f6f2;--green:#48d17b;--green2:#1f9d55}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#183323 0,transparent 48%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 16px calc(28px + env(safe-area-inset-bottom));}
+.app{max-width:520px;margin:0 auto}.top{display:flex;justify-content:space-between;align-items:center;padding:20px 2px 16px}.eyebrow{color:var(--green);font-size:11px;letter-spacing:2.5px;font-weight:800}.date{color:var(--muted);font-size:12px;margin-top:5px}.avatar{width:42px;height:42px;border:1px solid #31533d;border-radius:14px;display:grid;place-items:center;color:var(--green);font-size:20px;background:#142219}
+h1{font-size:29px;line-height:1.08;margin:5px 0 18px;letter-spacing:-1px}.hero{background:linear-gradient(145deg,#17251b,#101512 70%);border:1px solid #2b4934;border-radius:24px;padding:19px;margin-bottom:16px;display:grid;grid-template-columns:1fr 118px;gap:10px;align-items:center}.hero small{color:#a7b6aa;font-size:12px}.percent{font-size:38px;font-weight:800;letter-spacing:-2px;margin:6px 0}.sub{font-size:12px;color:#a7b6aa}.ring{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) var(--p),#2a342d 0);position:relative}.ring:before{content:"";position:absolute;inset:9px;background:#142019;border-radius:50%}.ring strong{position:relative;font-size:21px}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 11px}.sectionhead h2{font-size:16px;margin:0}.sectionhead span{font-size:11px;color:var(--muted)}
+.habits{display:grid;gap:9px}.habit{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px;display:flex;align-items:center;gap:12px;transition:.15s}.habit.done{border-color:#2e7047;background:#101d15}.check{width:27px;height:27px;border:1.5px solid #526157;border-radius:9px;flex:0 0 27px;display:grid;place-items:center;color:#061109;background:transparent;font-weight:900}.done .check{background:var(--green);border-color:var(--green)}.habitname{font-size:13px;font-weight:650;flex:1}.hint{font-size:10px;color:var(--muted);margin-top:3px}.done .habitname{color:#b7c8bb}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px 10px}.stat b{font-size:22px;display:block;letter-spacing:-1px}.stat span{font-size:10px;color:var(--muted)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.day{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 2px;text-align:center}.day span{display:block;color:var(--muted);font-size:9px;margin-bottom:8px}.dot{width:24px;height:24px;border-radius:50%;margin:auto;display:grid;place-items:center;font-size:10px;background:#222a24;color:#758078}.dot.partial{background:#5b4922;color:#f3d68b}.dot.full{background:#1e7441;color:#e4ffec}
+.monthbar{height:8px;background:#29322c;border-radius:20px;overflow:hidden;margin:10px 0}.monthbar div{height:100%;background:linear-gradient(90deg,#249b51,var(--green));width:0}
+.monthline{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
+footer{color:#718076;text-align:center;font-size:10px;padding:24px 8px 5px}
+button{font:inherit;cursor:pointer}.reset{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:12px;padding:10px 13px;font-size:11px}
+@media(max-width:360px){.hero{grid-template-columns:1fr 96px}.ring{width:92px;height:92px}.percent{font-size:34px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div><div class="eyebrow">TU CENTRO DE CONTROL</div><div class="date" id="today"></div></div>
+    <div class="avatar">✦</div>
+  </header>
+  <h1>MI MEJOR<br><span style="color:var(--green)">VERSIÓN.</span></h1>
+  <section class="hero">
+    <div><small>PROGRESO DE HOY</small><div class="percent" id="percent">0%</div><div class="sub" id="progressText">Hoy es una nueva oportunidad.</div></div>
+    <div class="ring" id="ring" style="--p:0%"><strong id="ringText">0/10</strong></div>
+  </section>
+
+  <div class="sectionhead"><h2>Hábitos diarios</h2><span id="count">0 de 10 completados</span></div>
+  <div class="habits" id="habits"></div>
+
+  <div class="sectionhead"><h2>Tu semana</h2><span>Últimos 7 días</span></div>
+  <div class="week" id="week"></div>
+
+  <div class="sectionhead"><h2>Estadísticas del mes</h2><span id="monthName"></span></div>
+  <div class="stats">
+    <div class="stat"><b id="monthAvg">0%</b><span>Promedio diario</span></div>
+    <div class="stat"><b id="perfect">0</b><span>Días completos</span></div>
+    <div class="stat"><b id="streak">0</b><span>Racha actual</span></div>
+  </div>
+  <section class="habit" style="display:block;margin-top:10px">
+    <div class="monthline"><span>Constancia mensual</span><b id="monthDone" style="color:var(--green)">0%</b></div>
+    <div class="monthbar"><div id="monthBar"></div></div>
+    <div class="monthline"><span id="monthDays">0 días registrados</span><span id="monthCompleted">0 hábitos</span></div>
+  </section>
+  <div class="sectionhead"><h2>Un día a la vez.</h2><button class="reset" id="resetToday">Reiniciar hoy</button></div>
+  <footer>Tus datos se guardan en este dispositivo. La constancia le gana a la perfección.</footer>
+</div>
+<script>
+const HABITS=[
+ ["Desperté a las 8:00","Comenzar el día a la hora que elegiste"],
+ ["Hice mi rutina de mañana","Agua, cama y activación"],
+ ["Comí de acuerdo con mi objetivo físico","Alimentación suficiente y equilibrada"],
+ ["Entrené o respeté mi descanso","Cumplir el plan sin sobreentrenar"],
+ ["Leí al menos 15 minutos","Invertir en tu desarrollo personal"],
+ ["Hice algo para aumentar mis ingresos","Una acción concreta para tu negocio"],
+ ["Cuidé mi imagen personal","Higiene, piel y presentación"],
+ ["Mantuve mi espacio organizado","Ordenar tu entorno y pendientes"],
+ ["Tuve un momento de tranquilidad","Pausa, respiración o reflexión"],
+ ["Me preparé para dormir a las 11:00","Cuidar tu descanso"]
+];
+const KEY="mejor-version-v1";
+const todayKey=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
+const dateObj=k=>new Date(k+"T12:00:00");
+let data={};try{data=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function getDay(k){return data[k]||[]}
+function pct(k){return Math.round(getDay(k).length/HABITS.length*100)}
+function render(){
+ const k=todayKey(),done=getDay(k),p=pct(k),d=dateObj(k);
+ document.getElementById("today").textContent=d.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+ document.getElementById("percent").textContent=p+"%";
+ document.getElementById("ring").style.setProperty("--p",p+"%");
+ document.getElementById("ringText").textContent=done.length+"/10";
+ document.getElementById("count").textContent=done.length+" de 10 completados";
+ document.getElementById("progressText").textContent=p===100?"¡Día completado! Gran trabajo.":p===0?"Hoy es una nueva oportunidad.": "Sigue avanzando. Cada hábito cuenta.";
+ const list=document.getElementById("habits");list.innerHTML="";
+ HABITS.forEach((h,i)=>{const yes=done.includes(i),el=document.createElement("button");el.className="habit"+(yes?" done":"");el.innerHTML=`<span class="check">${yes?"✓":""}</span><span style="text-align:left;flex:1"><span class="habitname">${h[0]}</span><span class="hint">${h[1]}</span></span>`;el.setAttribute("aria-label",h[0]);el.onclick=()=>{let a=getDay(k).slice();a=a.includes(i)?a.filter(x=>x!==i):[...a,i];data[k]=a;save();render()};list.appendChild(el)});
+ const week=document.getElementById("week");week.innerHTML="";
+ for(let n=6;n>=0;n--){const x=new Date();x.setDate(x.getDate()-n);const key=`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`,v=pct(key),day=document.createElement("div");day.className="day";day.innerHTML=`<span>${x.toLocaleDateString("es-MX",{weekday:"short"}).replace(".","")}</span><div class="dot ${v===100?"full":v>0?"partial":""}">${v===100?"✓":v? v+"%":"·"}</div>`;week.appendChild(day)}
+ const now=new Date(),year=now.getFullYear(),month=now.getMonth(),days=new Date(year,month+1,0).getDate(),prefix=`${year}-${String(month+1).padStart(2,"0")}-`;
+ const entries=Object.keys(data).filter(x=>x.startsWith(prefix)),total=entries.reduce((s,x)=>s+data[x].length,0),recorded=entries.length,avg=recorded?Math.round(total/(recorded*HABITS.length)*100):0,perfect=entries.filter(x=>data[x].length===HABITS.length).length;
+ document.getElementById("monthName").textContent=now.toLocaleDateString("es-MX",{month:"long",year:"numeric"});
+ document.getElementById("monthAvg").textContent=avg+"%";document.getElementById("perfect").textContent=perfect;
+ document.getElementById("monthDone").textContent=Math.round(total/(days*HABITS.length)*100)+"%";
+ document.getElementById("monthBar").style.width=Math.round(total/(days*HABITS.length)*100)+"%";
+ document.getElementById("monthDays").textContent=recorded+" días con actividad";
+ document.getElementById("monthCompleted").textContent=total+" hábitos completados";
+ let streak=0,cur=new Date();while(true){const key=`${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,"0")}-${String(cur.getDate()).padStart(2,"0")}`;if(pct(key)===100){streak++;cur.setDate(cur.getDate()-1)}else break}
+ document.getElementById("streak").textContent=streak;
+}
+document.getElementById("resetToday").onclick=()=>{if(confirm("¿Quieres borrar el progreso de hoy?")){delete data[todayKey()];save();render()}};
+render();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script>
+</body></html>
